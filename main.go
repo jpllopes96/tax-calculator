@@ -27,13 +27,8 @@ func main() {
 		panic(err)
 	}
 
-	// defer db.Close()
-
-	// err = db.Ping()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Println("Successfully connected!")
+	//wait all  to run and then close,
+	defer db.Close()
 	orderRepository := database.NewOrderRepository(db)
 
 	uc := usecase.NewCalculateFinalPrice(orderRepository)
