@@ -3,9 +3,9 @@ package usecase
 import "tax-calculator/internal/entity"
 
 type OrderInput struct {
-	ID    string
-	Price float64
-	Tax   float64
+	ID    string  `json:"id"`
+	Price float64 `json:"price"`
+	Tax   float64 `json:"tax"`
 }
 
 type OrderOutput struct {
@@ -14,6 +14,8 @@ type OrderOutput struct {
 	Tax        float64
 	FinalPrice float64
 }
+
+// {"id": "1", "price": 10.0, "tax": 0.1 }
 
 //SOLID  - "D" Dependency Inversion Principle
 type CalculateFinalPrice struct {

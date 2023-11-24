@@ -1,47 +1,25 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-	"tax-calculator/internal/infra/database"
-	"tax-calculator/internal/usecase"
-
-	_ "github.com/lib/pq"
+	"time"
 )
 
+func processando() {
+	for i := 0; i < 10; i++ {
+		fmt.Println(i)
+		time.Sleep(time.Second)
+	}
+
+}
+
+// T1
 func main() {
-	const (
-		host     = "localhost"
-		port     = 5432
-		user     = "postgres"
-		password = "root"
-		dbname   = "golang_training"
-	)
+	canal := make(chan int)
 
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+	go func() {
+		canal <- 1 //T2
+	}()
 
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
-
-	//wait all  to run and then close,
-	defer db.Close()
-	orderRepository := database.NewOrderRepository(db)
-
-	uc := usecase.NewCalculateFinalPrice(orderRepository)
-
-	input := usecase.OrderInput{
-		ID:    "1213",
-		Price: 10.0,
-		Tax:   1.0,
-	}
-
-	output, err := uc.Execute(input)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(output)
+	fmt.Println(<-canal)
 }
